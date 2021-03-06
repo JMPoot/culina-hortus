@@ -16,6 +16,7 @@ class CreateCookbooksTable extends Migration
         Schema::create('cookbooks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

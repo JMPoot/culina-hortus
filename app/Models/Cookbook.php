@@ -15,4 +15,9 @@ class Cookbook extends Model
     {
         return $this->belongsToMany(Recipe::class, 'cookbook_recipe');
     }
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
 }
