@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Ingredient;
+use App\Models\Cookbook;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class IngredientFactory extends Factory
+class CookbookFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Ingredient::class;
+    protected $model = Cookbook::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +24,8 @@ class IngredientFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Str::random(10),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'title' => Str::random(10),
         ];
     }
 }
