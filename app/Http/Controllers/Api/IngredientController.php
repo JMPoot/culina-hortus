@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\IngredientCollection;
+use App\Http\Resources\IngredientResource;
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
 
@@ -11,7 +13,7 @@ class IngredientController extends Controller
     //
     public function index() 
     {
-        return Ingredient::all();
+        return new IngredientCollection(Ingredient::all());
     }
 
     public function store(Request $request) 
@@ -21,25 +23,22 @@ class IngredientController extends Controller
         ]);
 
         $ingredient = Ingredient::create($request->all());
-        return $ingredient;
+        return new IngredientResource($ingredient);
     }
 
-    public function show($id) 
+    public function show(Ingredient $ingredient) 
     {
-        return Ingredient::findOrFail($id);
+        return new IngredientResource($ingredient);
     }
 
-    public function update(Request $request, $id) 
+    public function update(Request $request, Ingredient $ingredient) 
     {
-        $ingredient = Ingredient::findOrFail($id);
         $ingredient->update($request->all());
-
-        return $ingredient;
+        return new IngredientResource($ingredient);
     }
 
-    public function destroy($id)
+    public function destroy(Ingredient $ingredient)
     {
-        $ingredient = Ingredient::findOrFail($id);
         $ingredient->delete();
         return '';
     }
