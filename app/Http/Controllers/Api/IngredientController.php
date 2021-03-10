@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\IngredientCollection;
-use App\Http\Resources\IngredientResource;
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\IngredientResource;
+use App\Http\Resources\IngredientCollection;
 
 class IngredientController extends Controller
 {
     //
     public function index() 
     {
-        return new IngredientCollection(Ingredient::all());
+        return (new IngredientCollection(Ingredient::all()))->response();
     }
 
     public function store(Request $request) 
@@ -23,23 +24,23 @@ class IngredientController extends Controller
         ]);
 
         $ingredient = Ingredient::create($request->all());
-        return new IngredientResource($ingredient);
+        return (new IngredientResource($ingredient))->response(Response::HTTP_CREATED);
     }
 
     public function show(Ingredient $ingredient) 
     {
-        return new IngredientResource($ingredient);
+        return (new IngredientResource($ingredient))->response();
     }
 
     public function update(Request $request, Ingredient $ingredient) 
     {
         $ingredient->update($request->all());
-        return new IngredientResource($ingredient);
+        return (new IngredientResource($ingredient))->response();
     }
 
     public function destroy(Ingredient $ingredient)
     {
         $ingredient->delete();
-        return '';
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
