@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\RecipeController;
 use Illuminate\Http\Request;
@@ -22,3 +23,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('ingredients', IngredientController::class);
 Route::apiResource('recipes', RecipeController::class);
+
+Route::post('/token', [AuthController::class, 'login']);
