@@ -13,20 +13,25 @@ class AuthController extends Controller
 {
     public function login(Request $request) 
     {
-        $credentials = $request->only('email', 'password');
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
         $user = User::where('email', $request->email)->first();
-        
-        if (Auth::attempt($credentials)) { 
-            return response();
-        }
 
-        if (!$user || Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response(null, Response::HTTP_UNAUTHORIZED);
         }
-        
+
         return response()->json([
-            'access_token' => $user->createToken('authToken')
+            'access_token' => $user->createToken('authToken')->plainTextToken
         ]);
+    }
+
+    public function revoke(User $user) 
+    {
+        $user->tokens()->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

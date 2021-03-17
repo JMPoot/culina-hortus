@@ -25,3 +25,4 @@ Route::apiResource('ingredients', IngredientController::class);
 Route::apiResource('recipes', RecipeController::class);
 
 Route::post('/token', [AuthController::class, 'login']);
+Route::post('/token/revoke/{user}', [AuthController::class, 'revoke']);
