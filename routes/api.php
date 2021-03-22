@@ -24,5 +24,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('ingredients', IngredientController::class);
 Route::apiResource('recipes', RecipeController::class);
 
-Route::post('/token', [AuthController::class, 'login']);
-Route::post('/token/revoke/{user}', [AuthController::class, 'revoke']);
+Route::post('/tokens', [AuthController::class, 'login']);
+Route::post('/tokens/revoke/{user}', [AuthController::class, 'revoke']);
