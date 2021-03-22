@@ -6,6 +6,7 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Resources\RecipeCollection;
 use App\Http\Resources\RecipeResource;
 
@@ -16,14 +17,9 @@ class RecipeController extends Controller
         return (new RecipeCollection(Recipe::paginate()))->response();
     }
 
-    public function store(Request $request) 
+    public function store(StoreRecipeRequest $request) 
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'description' => 'required'
-        ]);
-        
-        $recipe = Recipe::create($request->all());
+        $recipe = Recipe::create($request->validated());
         return (new RecipeResource($recipe))->response(Response::HTTP_CREATED);
     }
 
@@ -32,9 +28,9 @@ class RecipeController extends Controller
         return (new RecipeResource($recipe))->response();
     }
 
-    public function update(Request $request, Recipe $recipe)
+    public function update(StoreRecipeRequest $request, Recipe $recipe)
     {
-        $recipe->update($request->all());
+        $recipe->update($request->validated());
         return (new RecipeResource($recipe))->response();
     }
 

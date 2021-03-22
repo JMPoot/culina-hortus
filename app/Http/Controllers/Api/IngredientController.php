@@ -6,6 +6,7 @@ use App\Models\Ingredient;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Resources\IngredientResource;
 use App\Http\Resources\IngredientCollection;
 
@@ -17,13 +18,9 @@ class IngredientController extends Controller
         return (new IngredientCollection(Ingredient::paginate()))->response();
     }
 
-    public function store(Request $request) 
+    public function store(StoreIngredientRequest $request) 
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-
-        $ingredient = Ingredient::create($request->all());
+        $ingredient = Ingredient::create($request->validated());
         return (new IngredientResource($ingredient))->response(Response::HTTP_CREATED);
     }
 
@@ -32,9 +29,9 @@ class IngredientController extends Controller
         return (new IngredientResource($ingredient))->response();
     }
 
-    public function update(Request $request, Ingredient $ingredient) 
+    public function update(StoreIngredientRequest $request, Ingredient $ingredient) 
     {
-        $ingredient->update($request->all());
+        $ingredient->update($request->validated());
         return (new IngredientResource($ingredient))->response();
     }
 
