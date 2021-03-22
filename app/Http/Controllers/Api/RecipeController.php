@@ -34,7 +34,7 @@ class RecipeController extends Controller
         return (new RecipeResource($recipe))->response();
     }
 
-    public function destory(Recipe $recipe) 
+    public function destroy(Recipe $recipe) 
     {
         $recipe->delete();
         return response(null, Response::HTTP_NO_CONTENT);
