@@ -14,7 +14,7 @@ class IngredientController extends Controller
     //
     public function index() 
     {
-        return (new IngredientCollection(Ingredient::all()))->response();
+        return (new IngredientCollection(Ingredient::paginate()))->response();
     }
 
     public function store(Request $request) 

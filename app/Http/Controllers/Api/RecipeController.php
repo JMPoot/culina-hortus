@@ -13,7 +13,7 @@ class RecipeController extends Controller
 {
     public function index() 
     {
-        return (new RecipeCollection(Recipe::all()))->response();
+        return (new RecipeCollection(Recipe::paginate()))->response();
     }
 
     public function store(Request $request) 
