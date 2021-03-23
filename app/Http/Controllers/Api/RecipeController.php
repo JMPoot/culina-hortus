@@ -20,7 +20,7 @@ class RecipeController extends Controller
 
     public function store(StoreRecipeRequest $request) 
     {
-        $recipe = Recipe::create($request->validated());
+        $recipe = Recipe::create($request->validated() + ['user_id' => auth()->user()->id]);
         return (new RecipeResource($recipe))->response(Response::HTTP_CREATED);
     }
 

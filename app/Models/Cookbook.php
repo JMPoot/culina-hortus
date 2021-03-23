@@ -9,7 +9,7 @@ class Cookbook extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'user_id'];
 
     public function recipes() 
     {
