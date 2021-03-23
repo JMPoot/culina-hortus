@@ -6,9 +6,9 @@ use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRecipeRequest;
-use App\Http\Resources\RecipeCollection;
 use App\Http\Resources\RecipeResource;
+use App\Http\Resources\RecipeCollection;
+use App\Http\Requests\StoreRecipeRequest;
 
 class RecipeController extends Controller
 {

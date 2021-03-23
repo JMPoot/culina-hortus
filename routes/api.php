@@ -17,12 +17,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/recipes/{recipe}', [RecipeController::class, 'store']);
+    Route::put('/recipes/{recipe}', [RecipeController::class, 'update']);
+    Route::delete('/recipes/{recipe}', [RecipeController::class, 'destroy']);
 });
 
 Route::apiResource('ingredients', IngredientController::class);
-Route::apiResource('recipes', RecipeController::class);
+
+Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes/{recipe}', [RecipeController::class, 'show']);
 
 Route::post('/tokens', [AuthController::class, 'login']);
 Route::post('/tokens/revoke/{user}', [AuthController::class, 'revoke']);
