@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RecipeResource;
 use App\Http\Resources\RecipeCollection;
 use App\Http\Requests\StoreRecipeRequest;
+use App\Http\Requests\UpdateRecipeRequest;
 
 class RecipeController extends Controller
 {
@@ -28,7 +29,7 @@ class RecipeController extends Controller
         return (new RecipeResource($recipe))->response();
     }
 
-    public function update(StoreRecipeRequest $request, Recipe $recipe)
+    public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
         $recipe->update($request->validated());
         return (new RecipeResource($recipe))->response();
@@ -36,6 +37,10 @@ class RecipeController extends Controller
 
     public function destroy(Recipe $recipe) 
     {
+        if (auth()->user()->id !== $recipe->user->id) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
         $recipe->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
