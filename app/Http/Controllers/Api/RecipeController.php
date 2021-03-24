@@ -20,7 +20,7 @@ class RecipeController extends Controller
 
     public function store(StoreRecipeRequest $request) 
     {
-        $recipe = Recipe::create($request->validated() + ['user_id' => auth()->user()->id]);
+        $recipe = Recipe::create($request->validated() + ['user_id' => $request->user()->id]);
         return (new RecipeResource($recipe))->response(Response::HTTP_CREATED);
     }
 
@@ -31,13 +31,17 @@ class RecipeController extends Controller
 
     public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
+        if ($request->user()->cannot('update', $recipe)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
         $recipe->update($request->validated());
         return (new RecipeResource($recipe))->response();
     }
 
-    public function destroy(Recipe $recipe) 
+    public function destroy(Request $request, Recipe $recipe) 
     {
-        if (auth()->user()->id !== $recipe->user->id) {
+        if ($request->user()->cannot('delete', $recipe)) {
             abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
         }
 
