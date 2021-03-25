@@ -20,7 +20,7 @@ class CookbookController extends Controller
 
     public function store(StoreCookbookRequest $request) 
     {
-        $cookbook = Cookbook::create($request->validated() + ['user_id' => 1]);
+        $cookbook = Cookbook::create($request->validated() + ['user_id' => $request->user()->id]);
         $cookbook->recipes()->attach($request->recipes);
 
         return (new CookbookResource($cookbook))->response(Response::HTTP_CREATED);
