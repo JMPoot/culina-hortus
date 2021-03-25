@@ -26,6 +26,7 @@ class StoreRecipeRequest extends FormRequest
         return [
             'title' => 'required',
             'description' => 'required',
+            'ingredients' => 'required',
         ];
     }
 }

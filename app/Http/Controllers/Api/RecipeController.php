@@ -21,10 +21,7 @@ class RecipeController extends Controller
     public function store(StoreRecipeRequest $request) 
     {
         $recipe = Recipe::create($request->validated() + ['user_id' => $request->user()->id]);
-
-        if (isset($request->ingredients)) {
-            $recipe->ingredients()->attach($request->ingredients);
-        }
+        $recipe->ingredients()->attach($request->ingredients);
 
         return (new RecipeResource($recipe))->response(Response::HTTP_CREATED);
     }
