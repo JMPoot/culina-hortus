@@ -33,12 +33,20 @@ class CookbookController extends Controller
     
     public function update(UpdateCookbookRequest $request, Cookbook $cookbook) 
     {
+        if ($request->user()->cannot('update', $cookbook)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
         $cookbook->update($request->validated());
         return (new CookbookResource($cookbook))->response();
     }
 
-    public function destroy(Cookbook $cookbook) 
+    public function destroy(Request $request, Cookbook $cookbook) 
     {
+        if ($request->user()->cannot('delete', $cookbook)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
         $cookbook->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
