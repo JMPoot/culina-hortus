@@ -6,6 +6,8 @@ use App\Models\Cookbook;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCookbookRequest;
+use App\Http\Requests\UpdateCookbookRequest;
 use App\Http\Resources\CookbookResource;
 use App\Http\Resources\CookbookCollection;
 
@@ -16,14 +18,9 @@ class CookbookController extends Controller
         return (new CookbookCollection(Cookbook::paginate()))->response();
     }
 
-    public function store(Request $request) 
+    public function store(StoreCookbookRequest $request) 
     {
-        $request->validate([
-            'title' => 'required',
-            'recipes' => 'required',
-        ]);
-
-        $cookbook = Cookbook::create($request->all() + ['user_id' => 1]);
+        $cookbook = Cookbook::create($request->validated() + ['user_id' => 1]);
         $cookbook->recipes()->attach($request->recipes);
 
         return (new CookbookResource($cookbook))->response(Response::HTTP_CREATED);
@@ -34,15 +31,9 @@ class CookbookController extends Controller
         return (new CookbookResource($cookbook))->response();
     }
     
-    public function update(Request $request, Cookbook $cookbook) 
+    public function update(UpdateCookbookRequest $request, Cookbook $cookbook) 
     {
-        $request->validate([
-            'title' => 'required',
-            'recipes' => 'required',
-        ]);
-
-        $cookbook->update($request->all());
-
+        $cookbook->update($request->validated());
         return (new CookbookResource($cookbook))->response();
     }
 
